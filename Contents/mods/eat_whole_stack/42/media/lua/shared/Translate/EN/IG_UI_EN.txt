@@ -1,0 +1,3 @@
+IGUI_RU = {
+    IGUI_eatWholeStack = "Eat whole stack"
+}

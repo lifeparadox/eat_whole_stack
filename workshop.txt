@@ -1,0 +1,6 @@
+version=1
+id=3617669428
+title=Eat whole stack
+description=Allow you to eat whole stack of food.
+tags=Build 42;QoL
+visibility=public
