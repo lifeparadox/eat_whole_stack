@@ -67,7 +67,7 @@ function eatWholeStack.contextMenu.onFillContextMenu(player_index, context, item
   local icon = nil
 
   for _, item in ipairs(items_list) do
-    if item and item:getStringItemType() == 'Food' then
+    if item and item:getStringItemType() == 'Food' and item:getScriptItem():isCantEat() == false then
       count = count + 1
       icon = item:getIcon()
     else
