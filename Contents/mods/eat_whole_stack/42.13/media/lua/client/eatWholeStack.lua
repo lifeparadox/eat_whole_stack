@@ -59,19 +59,23 @@ end
 
 ---@param player_index integer
 ---@param context ISContextMenu
----@param items (InventoryItem | umbrella.ISInventoryPane.ItemRecord)[]
-function eatWholeStack.contextMenu.onFillContextMenu(player_index, context, items)
+---@param items_list umbrella.ContextMenuItemStack[]
+function eatWholeStack.contextMenu.onFillContextMenu(player_index, context, items_list)
   local player = getSpecificPlayer(player_index)
-  local items_list = ISInventoryPane.getActualItems(items)
+  -- local items_list = ISInventoryPane.getActualItems(items)
   local count = 0
   local icon = nil
+  local food_items = {}
 
-  for key, item in ipairs(items_list) do
-    if item and item:getStringItemType() == 'Food' and item:getScriptItem():isCantEat() == false then
-      count = count + 1
-      icon = item:getIcon()
-    else
-      return
+  -- in in pz 42.13 callback items pass as ContextMenuItemStack
+  for key, item_table in ipairs(items_list) do
+    for key, item in ipairs(item_table.items) do
+      if item and item:getStringItemType() == 'Food' and item:getScriptItem():isCantEat() == false then
+        count = count + 1
+        icon = item:getIcon()
+      else
+        return
+      end
     end
   end
 
@@ -81,7 +85,6 @@ function eatWholeStack.contextMenu.onFillContextMenu(player_index, context, item
     local context_menu = context:addOption(getText('IGUI_eatWholeStack'), items_list, eatWholeStack.eatStack,
       player_index)
     context_menu.iconTexture = icon
-    dump_table(MoodleType)
     if player:getMoodles():getMoodleLevel(MoodleType.FOOD_EATEN) >= 3 then
       context_menu.notAvailable = true
       local tooltip = ISInventoryPaneContextMenu.addToolTip();
@@ -93,9 +96,3 @@ end
 
 ---@diagnostic disable-next-line: param-type-mismatch
 Events.OnFillInventoryObjectContextMenu.Add(eatWholeStack.contextMenu.onFillContextMenu)
-
-
-function dump_table(table)
-  local pretty_table_string = ''
-  -- pretty_table_string = pretty_table_string .. table.getName()
-end
