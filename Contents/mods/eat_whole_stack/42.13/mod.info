@@ -4,4 +4,4 @@ description=Allow you to eat whole stack.
 modversion=0.0.1
 author=lifeparadox
 url=https://github.com/lifeparadox/eat_whole_stack
-versionMin=42.0
+versionMin=42.13

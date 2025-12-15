@@ -8,7 +8,7 @@ eatWholeStack.contextMenu = {}
 function eatWholeStack.howManyCanEat(player_index, items)
   local eatingThisItems = {}
   local player = getSpecificPlayer(player_index)
-  local hungerLevel = player:getStats():getHunger()
+  local hungerLevel = player:getStats():get(CharacterStat.HUNGER)
 
   for key, item in ipairs(items) do
     --NOTE: always item is food
@@ -28,7 +28,7 @@ end
 ---@return InventoryItem?
 function eatWholeStack.getWornMask(player_index)
   local player = getSpecificPlayer(player_index)
-  local mask = player:getWornItem("Mask")
+  local mask = player:getWornItem(ItemBodyLocation.MASK)
   return mask
 end
 
@@ -66,7 +66,7 @@ function eatWholeStack.contextMenu.onFillContextMenu(player_index, context, item
   local count = 0
   local icon = nil
 
-  for _, item in ipairs(items_list) do
+  for key, item in ipairs(items_list) do
     if item and item:getStringItemType() == 'Food' and item:getScriptItem():isCantEat() == false then
       count = count + 1
       icon = item:getIcon()
@@ -75,11 +75,14 @@ function eatWholeStack.contextMenu.onFillContextMenu(player_index, context, item
     end
   end
 
+
+
   if count > 1 then
     local context_menu = context:addOption(getText('IGUI_eatWholeStack'), items_list, eatWholeStack.eatStack,
       player_index)
     context_menu.iconTexture = icon
-    if player:getMoodles():getMoodleLevel(MoodleType.FoodEaten) >= 3 then
+    dump_table(MoodleType)
+    if player:getMoodles():getMoodleLevel(MoodleType.FOOD_EATEN) >= 3 then
       context_menu.notAvailable = true
       local tooltip = ISInventoryPaneContextMenu.addToolTip();
       tooltip.description = getText("Tooltip_CantEatMore");
@@ -90,3 +93,9 @@ end
 
 ---@diagnostic disable-next-line: param-type-mismatch
 Events.OnFillInventoryObjectContextMenu.Add(eatWholeStack.contextMenu.onFillContextMenu)
+
+
+function dump_table(table)
+  local pretty_table_string = ''
+  -- pretty_table_string = pretty_table_string .. table.getName()
+end
