@@ -5,3 +5,4 @@ modversion=0.0.2
 author=lifeparadox
 url=https://github.com/lifeparadox/eat_whole_stack
 versionMin=42.12
+versionMax=42.12
